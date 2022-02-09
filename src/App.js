@@ -1,9 +1,8 @@
 import React from 'react';
 import './App.css';
 import Pagination from "./components/Pagination";
+import SearchBar from "./components/SearchBar";
 import { baseApiUrl } from './constants';
-import ResultView from './components/ResultView';
-import ReactPaginate from 'react-paginate';
 
 class App extends React.Component {
   constructor(props) {
@@ -20,21 +19,12 @@ class App extends React.Component {
     this.setSearchInput = this.setSearchInput.bind(this);
   }
 
-  componentDidMount() {
-    this.handleSearch(this.state.searchInput, 1);
-  }
-
   setSearchInput(event) {
     this.setState({ searchInput: event.target.value });
   }
 
-  handlePageClick = (e) => {
-    const page = e.selected + 1;
-    this.handleSearch(this.state.searchInput, page);
-  }
-
-  handleSearch = (input, page) => {
-    fetch(`${baseApiUrl}/recipes?search=${input}&page=${page}`)
+  handleSearch = (page = 1) => {
+    fetch(`${baseApiUrl}/recipes?search=${this.state.searchInput}&page=${page}`)
       .then((response) => {
         if (response.ok) {
           return response.json()
@@ -59,39 +49,15 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <div>
-        <input
-          type="text"
-          onChange={this.setSearchInput}>
-        </input>
-          <button onClick={() => { this.handleSearch(this.state.searchInput, 1) }}>
-            Search!
-          </button>
-        </div>
-        {/* <Pagination
-          onSearch={this.handleSearch}
-          loadData={this.loadData}
+        <SearchBar
+          setSearchInput={this.setSearchInput}
+          handleSearch={this.handleSearch}/>
+        <Pagination
+          handleSearch={this.handleSearch}
           searchInput={this.state.searchInput}
           recipes={this.state.recipes}
-          page={this.state.page}
-          per_page={this.state.per_page}
-          total={this.state.total}
-        ></Pagination> */}
-<>
-        <ResultView recipes={this.state.recipes}></ResultView>
-        <ReactPaginate
-          previousLabel={"prev"}
-          nextLabel={"next"}
-          breakLabel={"..."}
-          breakClassName={"break-me"}
           pageCount={this.state.pageCount}
-          marginPagesDisplayed={2}
-          pageRangeDisplayed={5}
-          onPageChange={this.handlePageClick}
-          containerClassName={"pagination"}
-          subContainerClassName={"pages pagination"}
-          activeClassName={"active"}/>
-      </>
+        ></Pagination>
       </div>
     );
   }

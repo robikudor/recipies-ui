@@ -10,9 +10,20 @@ class ResultView extends React.Component {
         }
           {this.props.recipes.length > 0 &&
            this.props.recipes.map((recipe, i) =>
-            <div key={recipe.id}>
-              <p>{recipe.ingredients.join(' | ')}</p>
+            <>
+            <div key={recipe.id} style={{ display: 'flex'}}>
+              <div style={{ width: '50%'}}>
+                <h3>{recipe.name}</h3>
+                {recipe.ingredients.map((ingredient, i) =>
+                  <ul>{ingredient}</ul>
+                )}
+              </div>
+              <div style={{ width: '50%'}}>
+                <img src={recipe.image} alt=""></img>
+              </div>
             </div>
+            <hr/>
+            </>
           )}
         </div>
       </div>

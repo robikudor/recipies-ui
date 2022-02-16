@@ -12,8 +12,9 @@ class ResultView extends React.Component {
            this.props.recipes.map((recipe, i) =>
             <>
             <div key={recipe.id} style={{ display: 'flex'}}>
-              <div style={{ width: '50%'}}>
+              <div style={{ width: '50%', textAlign: 'left'}}>
                 <h3>{recipe.name}</h3>
+                <div>Recipe {(recipe.rank * 100).toFixed(2)}% match</div>
                 {recipe.ingredients.map((ingredient, i) =>
                   <ul>{ingredient}</ul>
                 )}
